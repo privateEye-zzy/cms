@@ -15,6 +15,11 @@ const router = new Router({
       component: () => import('pages/list/list.vue')
     },
     {
+      path: '/proEdit',
+      name: 'proEdit',
+      component: () => import('pages/list/proEdit.vue')
+    },
+    {
       path: '/list2',
       name: 'list2',
       component: () => import('pages/list2/list2.vue')
@@ -34,11 +39,14 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   let nameList = router.options.routes.map(item => item.name)
   if( nameList.includes(to.name) ) {
-	if(to.name !== 'login' && !user.isLogin()){
-			return next('/login')
-		}
-    window.scrollTo(0, 0)
-    next()
+  if( to.name === 'login'){
+  	user.clear()
+  }
+	if( to.name !== 'login' && !user.isLogin()){
+		return next('/login')
+	}
+	window.scrollTo(0, 0)
+	next()
   }else {
     // 错误页面跳转
     // router.replace('/error/route')

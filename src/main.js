@@ -10,6 +10,7 @@ import './css/font/iconfont.css'
 import './css/common.css'
 import './css/animate.css'
 import './css/vedioDialog.css'
+import './css/loading.css'
 
 Vue.use(Toast)
 Vue.use(Confirm)

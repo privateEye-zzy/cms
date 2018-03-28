@@ -2,167 +2,43 @@
 	<div class="animated list-main" style="visibility:hidden;">
 		<div class="list-container">
 			<!--表单样式-->
-			<div class="box">
-				<p class="title">基本属性</p>
+			<div class="form-box">
 				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input :label="'姓名'"></z-input>
+					<z-input :label="'输入框'"></z-input>
 				</div>
 				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input :label="'价格'"></z-input>
+					<z-radio :label="'单选框'" :list="['单选框1', '单选框2', '单选框3']"></z-radio>
 				</div>
 				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-radio :label="'性别'" :list="['公','母']"></z-radio>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input v-model="formData['dateValue1']" :label="'出身日期'" :readonly="true" @focus="dateFlag1=true"></z-input>
-					<div v-if="dateFlag1" class="z-width-100-precent ub-box ub-end" style="height:25rem;">
+					<z-input v-model="formData['dateValue']" :label="'日期选择'" :readonly="true" @focus="dateFlag=true"></z-input>
+					<div v-if="dateFlag" class="z-width-100-precent ub-box ub-end" style="height:25rem;">
 						<div style="width:calc(100% - 220px);height:100%;">
-							<z-date :type="'day'" v-model="formData['dateValue1']" @close="dateFlag1=false"></z-date>
+							<z-date :type="'day'" v-model="formData['dateValue']" @close="dateFlag=false"></z-date>
 						</div>
 					</div>
 				</div>
 				<div style="width:calc(200px + 50%);" class="z-margin-bottom-40-rem">
-					<z-input v-model="formData['cityValue1']" :label="'出生地'" :readonly="true" @focus="cityFlag1=true"></z-input>
-					<div v-if="cityFlag1" class="z-width-100-percent ub-box ub-end">
+					<z-input v-model="formData['cityValue']" :label="'地点选择'" :readonly="true" @focus="cityFlag=true"></z-input>
+					<div v-if="cityFlag" class="z-width-100-percent ub-box ub-end">
 						<div style="width:calc(100% - 220px);height:100%;">
-							<z-city v-model="formData['cityValue1']" @close="cityFlag1=false"></z-city>
+							<z-city v-model="formData['cityValue']" @close="cityFlag=false"></z-city>
 						</div>
 					</div>
 				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input :label="'芯片号'"></z-input>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-radio :label="'犬种'" :list="['种公','种母', '预留种', '幼犬']"></z-radio>
-				</div>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-radio :label="'品种'" :list="['马犬', '昆明犬狼青', '昆明犬草黄', '昆明犬黑背']"></z-radio>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-radio :label="'出售状态'" :list="['待售', '出售','已售', '特价']"></z-radio>
-				</div>
-				<div style="width:calc(200px + 50%);" class="z-margin-bottom-40-rem">
-					<z-input v-model="formData['cityValue2']" :label="'出售地'" :readonly="true" @focus="cityFlag2=true"></z-input>
-					<div v-if="cityFlag2" class="z-width-100-percent ub-box ub-end">
-						<div style="width:calc(100% - 220px);height:100%;">
-							<z-city v-model="formData['cityValue2']" @close="cityFlag2=false"></z-city>
-						</div>
-					</div>
-				</div>
-				<div style="width:calc(200px + 10%);" class="z-margin-bottom-40-rem">
-					<z-select :label="'是否热门'" :list="['是','否']"></z-select>
+				<div style="width:calc(200px + 12%);" class="z-margin-bottom-40-rem">
+					<z-select :label="'下拉框'" :list="['下拉框1', '下拉框2', '下拉框3']"></z-select>
 				</div>
 				<div style="height:160px;width:calc(200px + 60%);" class="z-margin-bottom-40-rem">
-					<z-text-area :label="'产品描述'"></z-text-area>
+					<z-text-area :label="'区域'"></z-text-area>
 				</div>
 				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-radio :label="'是否参赛'" :list="['是', '否']"></z-radio>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-radio :label="'是否获奖'" :list="['是', '否']"></z-radio>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input :label="'获奖名次'"></z-input>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input :label="'主办单位'"></z-input>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input :label="'父亲'"></z-input>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input :label="'母亲'"></z-input>
-				</div>
-				<p class="title">疫苗情况</p>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input v-model="formData['dateValue2']" :label="'第一次注射'" :readonly="true" @focus="dateFlag2=true"></z-input>
-					<div v-if="dateFlag2" class="z-width-100-precent ub-box ub-end" style="height:25rem;">
-						<div style="width:calc(100% - 220px);height:100%;">
-							<z-date :type="'day'" v-model="formData['dateValue2']" @close="dateFlag2=false"></z-date>
-						</div>
-					</div>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-radio :label="'疫苗名称'" :list="['卫佳', '因特威']"></z-radio>
-				</div>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-check-box :label="'疫苗'" :list="['狂犬病',	'犬瘟热',	'细小病病毒','传染性肝炎','钩端螺旋体','副流感']"></z-check-box>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input v-model="formData['dateValue3']" :label="'第二次注射'" :readonly="true" @focus="dateFlag3=true"></z-input>
-					<div v-if="dateFlag3" class="z-width-100-precent ub-box ub-end" style="height:25rem;">
-						<div style="width:calc(100% - 220px);height:100%;">
-							<z-date :type="'day'" v-model="formData['dateValue3']" @close="dateFlag3=false"></z-date>
-						</div>
-					</div>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-radio :label="'疫苗名称'" :list="['为佳', '因特围']"></z-radio>
-				</div>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-check-box :label="'疫苗'" :list="['狂犬病',	'犬瘟热',	'细小病病毒','传染性肝炎','钩端螺旋体','副流感']"></z-check-box>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input v-model="formData['dateValue4']" :label="'第三次注射'" :readonly="true" @focus="dateFlag4=true"></z-input>
-					<div v-if="dateFlag4" class="z-width-100-precent ub-box ub-end" style="height:25rem;">
-						<div style="width:calc(100% - 220px);height:100%;">
-							<z-date :type="'day'" v-model="formData['dateValue4']" @close="dateFlag4=false"></z-date>
-						</div>
-					</div>
-				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-radio :label="'疫苗名称'" :list="['为佳', '因特围']"></z-radio>
-				</div>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-check-box :label="'疫苗'" :list="['狂犬病',	'犬瘟热',	'细小病病毒','传染性肝炎','钩端螺旋体','副流感']"></z-check-box>
-				</div>
-				<p class="title">物理信息</p>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-check-box :label="'体表'" :list="['体格健壮 ', '营养充足', '过瘦弱', '背柱和肋骨显露', '胖瘦适中']"></z-check-box>
-				</div>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-check-box :label="'被毛'" :list="['柔润', '光亮', '干净', '整齐', '挽毛', '贴身']"></z-check-box>
-				</div>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-radio :label="'眼睛'" :list="['暗褐色', '杏核型', '杏黄色']"></z-radio>
-				</div>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-radio :label="'毛色'" :list="['昆明犬狼青', '昆明犬草黄', '昆明犬黑背', '褐色', '黄色', '红色']"></z-radio>
-				</div>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-radio :label="'体型'" :list="['中等', '偏大',  '偏小']"></z-radio>
-				</div>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-radio :label="'胆量'" :list="['胆大', '一般', '胆小', '极度胆小']"></z-radio>
-				</div>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-radio :label="'攻击性'" :list="['强', '一般',  '弱', '无', '幼犬']"></z-radio>
-				</div>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-radio :label="'衔取'" :list="['强', '一般',  '差',  '无',  '食物欲望好']"></z-radio>
-				</div>
-				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-check-box :label="'运动气质'" :list="['兴奋性',  '活泼型',  '安静',  '忧郁型',  '神经质',  '依恋型',  '细路清晰',  '步态轻快 ', '反应灵敏',  '四肢关节正常']"></z-check-box>
-				</div>
-				<p class="title">图片信息</p>
-				<div style="height:450px;width:100%;" class="z-margin-bottom-40-rem">
-					<z-upload-img :label="'头部图片'"></z-upload-img>
+					<z-check-box :label="'多选框'" :list="['多选框1',	'多选框2', '多选框3', '多选框4']"></z-check-box>
 				</div>
 				<div style="height:450px;width:100%;" class="z-margin-bottom-40-rem">
-					<z-upload-img :label="'身段图片'"></z-upload-img>
+					<z-upload-img :label="'图片选择'"></z-upload-img>
 				</div>
-				<div style="height:450px;width:100%;" class="z-margin-bottom-40-rem">
-					<z-upload-img :label="'运动图片'"></z-upload-img>
-				</div>
-				<div style="height:450px;width:100%;" class="z-margin-bottom-40-rem">
-					<z-upload-img :label="'父亲图片'"></z-upload-img>
-				</div>
-				<div style="height:450px;width:100%;" class="z-margin-bottom-40-rem">
-					<z-upload-img :label="'母亲图片'"></z-upload-img>
-				</div>
-				<p class="title">视频信息</p>
 				<div style="width:100%;" class="z-margin-bottom-40-rem">
-					<z-upload-video :label="'上传视频'"></z-upload-video>
+					<z-upload-video :label="'视频选择'"></z-upload-video>
 				</div>
 				<div class="ub-box ub-ver submit-panel">
 					<div style="background:#f25807;width:158px;" class="ub-box ub-ver z-padding-all-10-rem z-color-fff z-font-size-16 form-btn z-curPonit">保存</div>
@@ -182,39 +58,32 @@
 	import zCity from 'services/form/zCity.vue'
 	import zDate from 'services/form/zDate.vue'
 	import zSelect from 'services/form/zSelect.vue'
-	import {initVisibility} from 'utils/visibility.js'
 	import FileVedioLoader from 'utils/FileVedioLoader.js'
-	import http from 'utils/http.js'
+	import {initVisibility} from 'utils/visibility.js'
 	export default {
 		components: {zInput, zTextArea, zRadio, zCheckBox, zCity, zDate, zSelect, zUploadImg, zUploadVideo},
 		data(){
 			return{
-				cityFlag1: false,
-				cityFlag2: false,
-				dateFlag1: false,
-				dateFlag2: false,
-				dateFlag3: false,
-				dateFlag4: false,
+				cityFlag: false,
+				dateFlag: false,
 				formData:{
-					cityValue1:'',
-					cityValue2:'',
-					dateValue1:'',
-					dateValue2:'',
-					dateValue3:'',
-					dateValue4:'',
+					cityValue:'',
+					dateValue:'',
 				}
 			}
 		},
 		mounted(){
-			this.$nextTick(()=>{initVisibility(this.$el)})
+			this.$nextTick(()=>{
+				initVisibility(this.$el)
+			})
 		},
 		methods:{}
 	}
 </script>
 <style scoped>
 	.list-main{}
-	.list-container{width:1226px;overflow-y:scroll;height:100%;position:relative;margin:auto;}
-	.box{border-radius:4px;padding:0 0 100px 0;background:#fff;}
+	.list-container{overflow-y:scroll;width:1226px;height:100%;position:relative;margin:auto;}
+	.form-box{border-radius:4px;margin:30px 0;padding:50px 0 50px 0;background:#fff;}
 	.title{position:relative;font-size:1.4rem;color:#888;margin-bottom:2rem;padding:1.4rem 1rem;background:#e7e7e7;}
 	.title:after{content:'';position:absolute;bottom:0;left:0;width:120px;height:3px;background:#35485D;}
 	.submit-panel{z-index:3000;position:fixed;bottom:0;left:calc((100% - 1226px - 100) / 2);width:1226px;border-top:1px solid #eee;background:#fff;padding:2rem 0;}
