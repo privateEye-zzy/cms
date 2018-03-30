@@ -19,11 +19,11 @@
 </template>
 <script>
 	export default {
-		props:['label', 'list'],
+		props:['label', 'list', 'value'],
 		data(){
 			return{
 				isShowList: false, 
-				selectIdx: 0,
+				selectIdx: -1,
 				listHeight: 0,
 			}
 		},
@@ -41,8 +41,14 @@
 			clickItem(item, idx){
 				this.showList()
 				this.selectIdx = idx
+				this.$emit('input', this.list[idx])
 			},
 		},
+		watch:{
+			value(newVal, oldVal){
+				this.selectIdx = this.list.findIndex(v => v === newVal)
+			}
+		}
 	}
 </script>
 <style scoped>

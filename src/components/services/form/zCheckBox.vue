@@ -8,7 +8,7 @@
 </template>
 <script>
 	export default {
-		props:['label', 'list'],
+		props:['label', 'list', 'value'],
 		data(){
 			return{
 				selectArr:[]
@@ -17,11 +17,26 @@
 		mounted(){},
 		methods:{
 			clickCheckBox(item, idx){
+				let ret = []
 				if(this.selectArr.includes(idx)){
 					this.selectArr.splice(this.selectArr.findIndex((value, index) => value === idx), 1)
-				}else{this.selectArr.push(idx)}
+				}else{
+					this.selectArr.push(idx)
+				}
+				this.selectArr.sort((a, b) => a - b)
+				this.selectArr.forEach(sIdx => {ret.push(this.list[sIdx])})
+				this.$emit('input', ret.join())
 			}
 		},
+		watch:{
+			value(newVal, oldVal){
+				let arr = newVal.split(',')	
+				this.selectArr = []
+				this.list.forEach((val, idx) => {
+					if(arr.includes(val)){this.selectArr.push(idx)}
+				})
+			}
+		}
 	}
 </script>
 <style scoped>

@@ -2,7 +2,7 @@
 	<div class="ub-box ub-ver-v z-height-100-percent">
 		<label class="form-label">{{label}}</label>
 		<ul class="form-radio-list ub-flex-1 ub-box z-margin-left-20-rem">
-			<li @click="selectIdx = idx" v-for="(item, idx) in list" class="ub-box ub-ver z-curPonit z-select-none z-margin-right-12-rem">
+			<li @click.stop="clickRedio(idx)" v-for="(item, idx) in list" class="ub-box ub-ver z-curPonit z-select-none z-margin-right-12-rem">
 				<div :class="{'active': selectIdx===idx}" class="form-radio ub-box ub-ver">
 					<span class="dot"></span>
 				</div>
@@ -13,14 +13,24 @@
 </template>
 <script>
 	export default {
-		props:['label', 'list'],
+		props:['label', 'list', 'value'],
 		data(){
 			return{
-				selectIdx:0
+				selectIdx: -1,
 			}
 		},
 		mounted(){},
-		methods:{},
+		methods:{
+			clickRedio(idx){
+				this.selectIdx = idx
+				this.$emit('input', this.list[idx])
+			}
+		},
+		watch:{
+			value(newVal, oldVal){
+				this.selectIdx = this.list.findIndex(v => v === newVal)
+			}
+		}
 	}
 </script>
 <style scoped>

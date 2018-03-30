@@ -24,7 +24,7 @@
 </template>
 <script>
 	export default {
-		props:['label'],
+		props:['label', 'value'],
 		data(){
 			return{
 				canvas:null,
@@ -45,8 +45,10 @@
 			fileChange(e){
 				let fileDom = e.target
 				let file = fileDom.files[0]
-				if(/image\/\w+/.test(file.type)){this.uploadFile(file)}
-				else{this.$toast({tip:'图片格式不正确', type:2})}
+				if(file){
+					if(/image\/\w+/.test(file.type)){this.uploadFile(file)}
+					else{this.$toast({tip:'图片格式不正确', type:2})}	
+				}
 			},
 			uploadFile(file){
 				let reader = new FileReader()
@@ -55,6 +57,7 @@
 					this.uploadImgs.push(reader.result)
 					this.showIdx = this.uploadImgs.length - 1
 					this.drawCanvas(reader.result)
+					this.$emit('input', this.uploadImgs)
 				}
 			},
 			clickThumb(idx){
@@ -66,6 +69,7 @@
 				this.uploadImgs.splice(idx, 1)
 				this.showIdx = this.uploadImgs.length - 1 < 0 ? 0 : this.uploadImgs.length - 1 
 				this.drawCanvas(this.uploadImgs[this.showIdx])
+				this.$emit('input', this.uploadImgs)
 			},
 			drawCanvas(base64, type='addCode'){
 				this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
@@ -80,6 +84,12 @@
 						}
 					}
 				}
+			},
+		},
+		watch:{
+			value(newVal, oldVal){
+				this.uploadImgs = newVal
+				this.drawCanvas(this.uploadImgs[0])
 			},
 		},
 	}

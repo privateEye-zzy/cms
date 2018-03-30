@@ -2,18 +2,26 @@
 	<div class="ub-box ub-ver-v z-height-100-percent">
 		<label class="form-label">{{label}}</label>
 		<div class="z-relative z-height-100-percent ub-flex-1 ub-box z-margin-left-20-rem">
-			<textarea :placeholder="'请输入'+label+'...'" class="form-textarea"></textarea>
+			<textarea v-model="curValue" :placeholder="'请输入'+label+'...'" class="form-textarea"></textarea>
 		</div>
 	</div>
 </template>
 <script>
 	export default {
-		props:['label'],
+		props:['label', 'value'],
 		data(){
-			return{}
+			return{
+				curValue:''
+			}
 		},
-		mounted(){},
+		mounted(){
+			this.curValue = this.value
+		},
 		methods:{},
+		watch:{
+			value(newVal, oldVal){this.curValue = this.value},
+			curValue(newVal, oldVal){this.$emit('input', newVal)}
+		},
 	}
 </script>
 <style scoped>

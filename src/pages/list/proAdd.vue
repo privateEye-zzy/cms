@@ -159,7 +159,7 @@
 					<z-upload-video v-model="formData['videoUrl']" :label="'上传视频'" @getVideoBinaryService='getVideoBinaryService'></z-upload-video>
 				</div>
 				<div class="ub-box ub-ver submit-panel">
-					<div @click.stop="submitForm" style="background:#f25807;width:158px;" class="ub-box ub-ver z-padding-all-10-rem z-color-fff z-font-size-16 form-btn z-curPonit">更新</div>
+					<div @click.stop="submitForm" style="background:#f25807;width:158px;" class="ub-box ub-ver z-padding-all-10-rem z-color-fff z-font-size-16 form-btn z-curPonit">保存</div>
 					<div style="background:#757575;width:158px;" class="z-margin-left-20-rem ub-box ub-ver z-padding-all-10-rem z-color-fff z-font-size-16 form-btn  z-curPonit">取消</div>
 				</div>
 			</div>
@@ -191,32 +191,22 @@
 				dateFlag2: false,
 				dateFlag3: false,
 				dateFlag4: false,
-				formData: {},
+				formData: JSON.parse(JSON.stringify(dogSchema)),
 				uploadBinaryArr: [],
 			}
 		},
 		mounted(){
-			this.$nextTick(()=>{
-				initVisibility(this.$el)
-				this.initForm()
-			})
+			this.$nextTick(()=>{initVisibility(this.$el)})
 		},
 		methods:{
 			getVideoBinaryService(binary){
 				this.uploadBinaryArr.push(binary)
 			},
-			async initForm(){
-				let id = '5abdb09198ff9337e4cc6240'
-				let ret = await dogService.transformToVue(dogUrl['findById']+'?id='+id, 'get')
-				this.formData = JSON.parse(JSON.stringify(ret))
-			},
 			async submitForm(){
-				let fileName = 'public/videos/'+Math.random().toString(36).substr(2)+'.mp4'
-				let id = '5abdb09198ff9337e4cc6240'
-				let form_ret = await dogService.transformToService(dogUrl['update'], 'put', {id: id, update: this.formData})
+				let ret = await dogService.transformToService(dogUrl['save'], 'post', this.formData)
 				let len = this.uploadBinaryArr.length
 				for(let i = 0; i<len; i++){
-					let video_ret = await dogService.transformToService(dogUrl['updateVideo'], 'put', {id: id, videoBin: [this.uploadBinaryArr[i]], fileName: fileName, curProcess: (i+1) / len })					
+					let video_ret = await dogService.transformToService(dogUrl['updateVideo'], 'put', {id: ret['_id'], videoBin: [this.uploadBinaryArr[i]], fileName: fileName, curProcess: (i+1) / len })					
 					console.log(JSON.stringify(video_ret))
 				}
 			}

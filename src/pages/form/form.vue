@@ -4,44 +4,44 @@
 			<!--表单样式-->
 			<div class="form-box">
 				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input :label="'输入框'"></z-input>
+					<z-input v-model="formData['inputVal']" :label="'输入框'"></z-input>
 				</div>
 				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-radio :label="'单选框'" :list="['单选框1', '单选框2', '单选框3']"></z-radio>
+					<z-radio v-model="formData['radioVal']" :label="'单选框'" :list="['单选框1', '单选框2', '单选框3']"></z-radio>
 				</div>
 				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input v-model="formData['dateValue']" :label="'日期选择'" :readonly="true" @focus="dateFlag=true"></z-input>
+					<z-input v-model="formData['dateVal']" :label="'日期选择'" :readonly="true" @focus="dateFlag=true"></z-input>
 					<div v-if="dateFlag" class="z-width-100-precent ub-box ub-end" style="height:25rem;">
 						<div style="width:calc(100% - 220px);height:100%;">
-							<z-date :type="'day'" v-model="formData['dateValue']" @close="dateFlag=false"></z-date>
+							<z-date :type="'day'" v-model="formData['dateVal']" @close="dateFlag=false"></z-date>
 						</div>
 					</div>
 				</div>
 				<div style="width:calc(200px + 50%);" class="z-margin-bottom-40-rem">
-					<z-input v-model="formData['cityValue']" :label="'地点选择'" :readonly="true" @focus="cityFlag=true"></z-input>
+					<z-input v-model="formData['placeVal']" :label="'地点选择'" :readonly="true" @focus="cityFlag=true"></z-input>
 					<div v-if="cityFlag" class="z-width-100-percent ub-box ub-end">
 						<div style="width:calc(100% - 220px);height:100%;">
-							<z-city v-model="formData['cityValue']" @close="cityFlag=false"></z-city>
+							<z-city v-model="formData['placeVal']" @close="cityFlag=false"></z-city>
 						</div>
 					</div>
 				</div>
 				<div style="width:calc(200px + 12%);" class="z-margin-bottom-40-rem">
-					<z-select :label="'下拉框'" :list="['下拉框1', '下拉框2', '下拉框3']"></z-select>
+					<z-select v-model="formData['selectVal']" :label="'下拉框'" :list="['下拉框1', '下拉框2', '下拉框3']"></z-select>
 				</div>
 				<div style="height:160px;width:calc(200px + 60%);" class="z-margin-bottom-40-rem">
-					<z-text-area :label="'区域'"></z-text-area>
+					<z-text-area v-model="formData['textAreaVal']" :label="'区域'"></z-text-area>
 				</div>
 				<div style="width:80%;" class="z-margin-bottom-40-rem">
-					<z-check-box :label="'多选框'" :list="['多选框1',	'多选框2', '多选框3', '多选框4']"></z-check-box>
+					<z-check-box v-model="formData['checkBoxVal']" :label="'多选框'" :list="['多选框1',	'多选框2', '多选框3', '多选框4']"></z-check-box>
 				</div>
 				<div style="height:450px;width:100%;" class="z-margin-bottom-40-rem">
-					<z-upload-img :label="'图片选择'"></z-upload-img>
+					<z-upload-img v-model="formData['uploadImgVal']" :label="'图片选择'"></z-upload-img>
 				</div>
 				<div style="width:100%;" class="z-margin-bottom-40-rem">
-					<z-upload-video :label="'视频选择'"></z-upload-video>
+					<z-upload-video v-model="formData['uploadVideoVal']" :label="'视频选择'"></z-upload-video>
 				</div>
 				<div class="ub-box ub-ver submit-panel">
-					<div style="background:#f25807;width:158px;" class="ub-box ub-ver z-padding-all-10-rem z-color-fff z-font-size-16 form-btn z-curPonit">保存</div>
+					<div @click.stop="submitForm" style="background:#f25807;width:158px;" class="ub-box ub-ver z-padding-all-10-rem z-color-fff z-font-size-16 form-btn z-curPonit">保存</div>
 					<div style="background:#757575;width:158px;" class="z-margin-left-20-rem ub-box ub-ver z-padding-all-10-rem z-color-fff z-font-size-16 form-btn  z-curPonit">取消</div>
 				</div>
 			</div>
@@ -60,16 +60,14 @@
 	import zSelect from 'services/form/zSelect.vue'
 	import FileVedioLoader from 'utils/FileVedioLoader.js'
 	import {initVisibility} from 'utils/visibility.js'
+	import formSchema from 'schema/formSchema.js'
 	export default {
 		components: {zInput, zTextArea, zRadio, zCheckBox, zCity, zDate, zSelect, zUploadImg, zUploadVideo},
 		data(){
 			return{
 				cityFlag: false,
 				dateFlag: false,
-				formData:{
-					cityValue:'',
-					dateValue:'',
-				}
+				formData: JSON.parse(JSON.stringify(formSchema)),
 			}
 		},
 		mounted(){
@@ -77,7 +75,11 @@
 				initVisibility(this.$el)
 			})
 		},
-		methods:{}
+		methods:{
+			async submitForm(){
+				console.log(JSON.stringify(this.formData))
+			}
+		}
 	}
 </script>
 <style scoped>

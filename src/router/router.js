@@ -15,6 +15,11 @@ const router = new Router({
       component: () => import('pages/list/list.vue')
     },
     {
+      path: '/proAdd',
+      name: 'proAdd',
+      component: () => import('pages/list/proAdd.vue')
+    },
+    {
       path: '/proEdit',
       name: 'proEdit',
       component: () => import('pages/list/proEdit.vue')
@@ -50,7 +55,7 @@ router.beforeEach((to, from, next) => {
   }else {
     // 错误页面跳转
     // router.replace('/error/route')
-    next()
+    return next('/login')
   }
 })
 

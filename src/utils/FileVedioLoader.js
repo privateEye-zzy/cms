@@ -1,3 +1,7 @@
+import loading from 'utils/loading'
+function loadTask(){
+	return new Promise(resolve => {setTimeout(()=>{loading.remove();resolve()},300)})
+}
 class FileVedioLoader {
 	constructor(file, cbs={}){
 		this.reader = new FileReader()
@@ -5,9 +9,10 @@ class FileVedioLoader {
 		this.file = file
 		this.loaded = 0
 		this.total = file.size
-		this.step = 1024 * 1024 * 10 //每次读取10M
+		this.step = 1024 * 1024 //每次读取1M
 		this.bindEvent()
 		this.readBlob(0)
+		loading.show()
 	}
 	bindEvent(){
 		this.reader.addEventListener('progress', e => this.progress(e))
@@ -24,6 +29,7 @@ class FileVedioLoader {
 			this.readBlob(this.loaded)
 		}else {
 			this.loaded = this.total
+			loadTask()
 			console.log('上传完毕...')
 		}
 	}

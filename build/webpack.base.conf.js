@@ -36,7 +36,8 @@ module.exports = {
       'layouts': resolve('src/components/layouts'),
       'business': resolve('src/business'),
       'config': resolve('src/config'),
-      'commons': resolve('src/components/commons')
+      'commons': resolve('src/components/commons'),
+      'schema': resolve('src/schema')
     }
   },
   module: {
