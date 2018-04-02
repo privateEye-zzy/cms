@@ -1,6 +1,12 @@
 <template>
 	<div class="animated" style="visibility:hidden;">
 		<div class="list">
+			<dl class="ub-box ub-ver ub-between z-select-none z-margin-bottom-10-rem">
+				<dt class="title z-relative z-font-size-15 z-color-fff">产品列表</dt>
+				<dd @click.stop="$router.replace('proAdd')" class="addBtn ub-end ub-box ub-ver z-curPonit z-font-size-14 z-color-fff">
+					<icon style="color:#fff;" name="plus" scale='1'></icon>
+				</dd>
+			</dl>
 			<my-table :header="tableHeader" :body="currTable" @editService='editService' @deleteService='deleteService'></my-table>
 			<div class="z-margin-top-25-rem ub-box ub-ver">
 				<my-paging :totle="totalPage" :curPage="curPage" @pageService='pageService'></my-paging>
@@ -12,12 +18,9 @@
 	import myTable from 'services/table/zTable.vue'
 	import myPaging from 'services/paging/zPaging.vue'
 	import {initVisibility} from 'utils/visibility.js'
-	const rand = (n=3) => {
-		let chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-		let ret = ''
-		for(let i=0;i<n;i++) {ret += chars[Math.ceil(Math.random()*35)]}
-		return ret
-	}
+	import {dogUrl} from 'config/urlConfig.js'
+	import dogSchema from 'schema/dogSchema.js'
+	import dogService from 'business/dogService.js'
 	export default {
 		components: {myTable, myPaging},
 		data(){
@@ -25,42 +28,23 @@
 				curPage: 1,
 				pageNum: 10,
 				totalPage: 1,
-				tableHeader: ['编号', '姓名', '年纪', '性别', '种类', '价格'],
+				tableHeader: ['编号', '姓名', '年纪', '性别', '种类', '出售状态', '价格'],
 				totalTable: [],
 				currTable: [],
-				allBody: [
-					{cid:'111', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'222', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'333', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'444', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'555', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'666', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'777', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'888', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'999', name:rand(), age:'30', sex:rand(), classify:rand(),price:rand()},
-					{cid:'123', name:rand(), age:'30', sex:rand(), classify:rand(),price:rand()},
-					{cid:'124', name:rand(), age:'30', sex:rand(), classify:rand(),price:rand()},
-					{cid:'125', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'200', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'201', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'202', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'203', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'204', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'205', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'206', name:rand(), age:'20', sex:rand(), classify:rand(),price:rand()},
-					{cid:'300', name:rand(), age:'30', sex:rand(), classify:rand(),price:rand()},
-					{cid:'301', name:rand(), age:'30', sex:rand(), classify:rand(),price:rand()},
-					{cid:'302', name:rand(), age:'30', sex:rand(), classify:rand(),price:rand()},
-				],
+				allBody: [],
 			}
 		},
 		mounted(){
 			this.$nextTick(()=>{
 				initVisibility(this.$el)
-				this.searchTable('')
+				this.initList()
 			})
 		},
 		methods:{
+			async initList(){
+				this.allBody = await dogService.transformToVue(dogUrl['list'], 'get')
+				this.searchTable('')
+			},
 			searchService(txt){
 				this.searchTable(txt)
 			},
@@ -70,7 +54,7 @@
 				this.currTable = []
 				if(txt === ''){this.totalTable = temp}
 				else{
-					temp.forEach(item => {if(item['cid'] == txt){this.totalTable.push(item)}})
+					temp.forEach(item => {if(item['goodId'].indexOf(txt) >= 0){this.totalTable.push(item)}})
 				}
 				this.resetPaging(this.totalTable)
 				this.renderTable(this.totalTable)
@@ -88,7 +72,7 @@
 				this.renderTable(this.totalTable)
 			},
 			editService(id){
-				this.$router.push('form')
+				this.$router.push({name: 'proEdit', params:{id: id}})
 			},
 			deleteService(id){
 				this.$confirm({
@@ -101,4 +85,7 @@
 </script>
 <style scoped="scoped">
 	.list{margin:3rem auto;width:calc(100% - 60px);height:calc(100% - 100px);}
+	.title{background: #2A3E50;padding:.5rem 1rem;}
+	.title:after{content:'';position:absolute;top:calc(100% - 2px);left:100%;width:50px;height:2px;background:#2A3E50;}
+	.addBtn{padding:.5rem .7rem;background:#2A3E50;border-radius:3px;}
 </style>

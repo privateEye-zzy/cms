@@ -7,21 +7,22 @@
 			</thead>
 			<tbody>
 				<tr v-for="tr in body">
-					<td>{{tr["cid"]}}</td>
+					<td>{{tr["goodId"]}}</td>
 					<td>{{tr["name"]}}</td>
 					<td>{{tr["age"]}}</td>
 					<td>{{tr["sex"]}}</td>
-					<td>{{tr["classify"]}}</td>
+					<td>{{tr["varieties"]}}</td>
+					<td>{{tr["sell_state"]}}</td>
 					<td>{{tr["price"]}}</td>
 					<td style="width:120px;">
 						<ul class="ub-box ub-ver">
 							<li class="btn ub-box ub-ver z-margin-right-10-rem" style="background:#2EBACE;">
 								<icon style="color:#fff;" name="tasks" scale='1'></icon>
 							</li>
-							<li @click.stop="$emit('editService', tr['cid'])" class="btn ub-box ub-ver z-margin-right-10-rem" style="background:#FFA63B;">
+							<li @click.stop="$emit('editService', tr['id'])" class="btn ub-box ub-ver z-margin-right-10-rem" style="background:#FFA63B;">
 								<icon style="color:#fff;" name="edit" scale='1'></icon>
 							</li>
-							<li @click.stop="$emit('deleteService', tr['cid'])" class="btn ub-box ub-ver" style="background:#F67358;">
+							<li @click.stop="$emit('deleteService', tr['id'])" class="btn ub-box ub-ver" style="background:#F67358;">
 								<icon style="color:#fff;" name="archive" scale='1'></icon>
 							</li>
 						</ul>

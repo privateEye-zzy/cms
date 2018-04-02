@@ -20,7 +20,7 @@ const router = new Router({
       component: () => import('pages/list/proAdd.vue')
     },
     {
-      path: '/proEdit',
+      path: '/proEdit/:id',
       name: 'proEdit',
       component: () => import('pages/list/proEdit.vue')
     },

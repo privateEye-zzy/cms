@@ -3,6 +3,7 @@ export default {
 	name: '', // 姓名
 	price: '', // 价格
 	sex: '',	// 性别
+	age: '',    // 年纪
 	birth_date: '', // 出身日期
 	birth_place: '', // 出身地
 	breed: '', // 犬种

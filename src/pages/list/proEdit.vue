@@ -17,6 +17,9 @@
 					<z-radio v-model="formData['sex']" :label="'性别'" :list="['公','母']"></z-radio>
 				</div>
 				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
+					<z-input v-model="formData['age']" :label="'年纪'"></z-input>
+				</div>
+				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
 					<z-input v-model="formData['birth_date']" :label="'出身日期'" :readonly="true" @focus="dateFlag1=true"></z-input>
 					<div v-if="dateFlag1" class="z-width-100-precent ub-box ub-end" style="height:25rem;">
 						<div style="width:calc(100% - 220px);height:100%;">
@@ -67,11 +70,17 @@
 				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
 					<z-input v-model="formData['host_unit']" :label="'主办单位'"></z-input>
 				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input :label="'父亲'"></z-input>
+				<div style="width:calc(200px + 50%);" class="z-margin-bottom-40-rem">
+					<z-input :value="foreignMap[formData['father']]" :label="'父亲选择'" :readonly="true" @focus="foreignFlag1=true"></z-input>
+					<div v-if="foreignFlag1" class="z-width-100-percent ub-box ub-end">
+						<z-foreign-radio v-model="formData['father']" :label="'父亲选择'" :map="foreignMap" @close="foreignFlag1=false"></z-foreign-radio>
+					</div>
 				</div>
-				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
-					<z-input :label="'母亲'"></z-input>
+				<div style="width:calc(200px + 50%);" class="z-margin-bottom-40-rem">
+					<z-input :value="foreignMap[formData['mother']]" :label="'母亲选择'" :readonly="true" @focus="foreignFlag2=true"></z-input>
+					<div v-if="foreignFlag2" class="z-width-100-percent ub-box ub-end">
+						<z-foreign-radio v-model="formData['mother']" :label="'母亲选择'" :map="foreignMap" @close="foreignFlag2=false"></z-foreign-radio>
+					</div>
 				</div>
 				<p class="title">疫苗情况</p>
 				<div style="width:calc(200px + 30%);" class="z-margin-bottom-40-rem">
@@ -160,7 +169,7 @@
 				</div>
 				<div class="ub-box ub-ver submit-panel">
 					<div @click.stop="submitForm" style="background:#f25807;width:158px;" class="ub-box ub-ver z-padding-all-10-rem z-color-fff z-font-size-16 form-btn z-curPonit">更新</div>
-					<div style="background:#757575;width:158px;" class="z-margin-left-20-rem ub-box ub-ver z-padding-all-10-rem z-color-fff z-font-size-16 form-btn  z-curPonit">取消</div>
+					<div @click.stop="$router.replace('/')" style="background:#757575;width:158px;" class="z-margin-left-20-rem ub-box ub-ver z-padding-all-10-rem z-color-fff z-font-size-16 form-btn  z-curPonit">取消</div>
 				</div>
 			</div>
 		</div>
@@ -176,13 +185,14 @@
 	import zCity from 'services/form/zCity.vue'
 	import zDate from 'services/form/zDate.vue'
 	import zSelect from 'services/form/zSelect.vue'
+	import zForeignRadio from 'services/form/zForeignRadio.vue'
 	import {initVisibility} from 'utils/visibility.js'
 	import FileVedioLoader from 'utils/FileVedioLoader.js'
 	import {dogUrl} from 'config/urlConfig.js'
 	import dogSchema from 'schema/dogSchema.js'
 	import dogService from 'business/dogService.js'
 	export default {
-		components: {zInput, zTextArea, zRadio, zCheckBox, zCity, zDate, zSelect, zUploadImg, zUploadVideo},
+		components: {zInput, zTextArea, zRadio, zCheckBox, zCity, zDate, zSelect, zForeignRadio, zUploadImg, zUploadVideo},
 		data(){
 			return{
 				cityFlag1: false,
@@ -191,6 +201,9 @@
 				dateFlag2: false,
 				dateFlag3: false,
 				dateFlag4: false,
+				foreignFlag1: false,
+				foreignFlag2: false,
+				foreignMap: {},
 				formData: {},
 				uploadBinaryArr: [],
 			}
@@ -205,20 +218,29 @@
 			getVideoBinaryService(binary){
 				this.uploadBinaryArr.push(binary)
 			},
+			async initForeignData(){
+				let ret = await dogService.transformToVue(dogUrl['list'], 'get')
+				this.foreignMap = {}
+				ret.forEach(item => {
+					if(this.$route.params['id'] !== item['id']){
+						this.foreignMap[item['id']] = item['name']
+					}
+				})
+			},
 			async initForm(){
-				let id = '5abdb09198ff9337e4cc6240'
-				let ret = await dogService.transformToVue(dogUrl['findById']+'?id='+id, 'get')
+				let ret = await dogService.transformToVue(dogUrl['findById']+'?id='+this.$route.params['id'], 'get')
 				this.formData = JSON.parse(JSON.stringify(ret))
+				await this.initForeignData()
 			},
 			async submitForm(){
 				let fileName = 'public/videos/'+Math.random().toString(36).substr(2)+'.mp4'
-				let id = '5abdb09198ff9337e4cc6240'
-				let form_ret = await dogService.transformToService(dogUrl['update'], 'put', {id: id, update: this.formData})
+				let form_ret = await dogService.transformToService(dogUrl['update'], 'put', {id: this.$route.params['id'], update: this.formData})
 				let len = this.uploadBinaryArr.length
 				for(let i = 0; i<len; i++){
-					let video_ret = await dogService.transformToService(dogUrl['updateVideo'], 'put', {id: id, videoBin: [this.uploadBinaryArr[i]], fileName: fileName, curProcess: (i+1) / len })					
-					console.log(JSON.stringify(video_ret))
+					let video_ret = await dogService.transformToService(dogUrl['updateVideo'], 'put', {id: this.$route.params['id'], videoBin: [this.uploadBinaryArr[i]], fileName: fileName, curProcess: (i+1) / len })					
 				}
+				this.$toast({tip:'更新成功', type: 1})
+				this.$router.replace('/')
 			}
 		}
 	}
@@ -229,5 +251,5 @@
 	.form-box{border-radius:4px;margin:30px 0;padding:0 0 100px 0;background:#fff;}
 	.title{position:relative;font-size:1.4rem;color:#888;margin-bottom:2rem;padding:1.4rem 1rem;background:#e7e7e7;}
 	.title:after{content:'';position:absolute;bottom:0;left:0;width:120px;height:3px;background:#35485D;}
-	.submit-panel{z-index:3000;position:fixed;bottom:0;left:calc((100% - 1226px - 100) / 2);width:1226px;border-top:1px solid #eee;background:#fff;padding:2rem 0;}
+	.submit-panel{z-index:1000;position:fixed;bottom:0;left:calc((100% - 1226px - 100) / 2);width:1226px;border-top:1px solid #eee;background:#fff;padding:2rem 0;}
 </style>

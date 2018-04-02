@@ -1,12 +1,12 @@
 <template>
 	<div class="ub-box ub-ver-v z-height-100-percent">
 		<label class="form-label">{{label}}</label>
-		<ul class="form-radio-list ub-flex-1 ub-box z-margin-left-20-rem">
-			<li @click.stop="clickRedio(idx)" v-for="(item, idx) in list" class="ub-box ub-ver z-curPonit z-select-none z-margin-right-12-rem">
+		<ul class="form-radio-list ub-flex-1 ub-box ub-ver-v ub-wrap z-margin-left-20-rem">
+			<li ref="lid" @click.stop="clickRedio(idx)" v-for="(item, idx) in list" class="ub-box ub-ver z-curPonit z-select-none z-margin-right-12-rem">
 				<div :class="{'active': selectIdx===idx}" class="form-radio ub-box ub-ver">
 					<span class="dot"></span>
 				</div>
-				<span class="z-margin-left-5-rem z-font-size-16 z-color-888">{{item}}</span>
+				<span class="z-lineHeight-40 z-margin-left-5-rem z-font-size-16 z-color-888">{{item}}</span>
 			</li>
 		</ul>
 	</div>

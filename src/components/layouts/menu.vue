@@ -1,7 +1,7 @@
 <template>
 	<div class="menuPanel">
 		<div class="logo ub-box ub-ver z-padding-all-20-rem">
-			<icon style="color:#fff;" name="taxi" scale='2.5'></icon>
+			<icon style="color:#fff;" name="pied-piper-alt" scale='2.5'></icon>
 		</div>
 		<dl class="ub-box ub-col">
 			<dd @click="goMenus(0)" :class="{'menuActive': curIdx==0}" class="menu ub-box ub-ver z-color-fff z-curPonit z-select-none z-padding-all-20-rem">

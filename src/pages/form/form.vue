@@ -28,6 +28,12 @@
 				<div style="width:calc(200px + 12%);" class="z-margin-bottom-40-rem">
 					<z-select v-model="formData['selectVal']" :label="'下拉框'" :list="['下拉框1', '下拉框2', '下拉框3']"></z-select>
 				</div>
+				<div style="width:calc(200px + 50%);" class="z-margin-bottom-40-rem">
+					<z-input :value="foreignMap[formData['foreignRadioVal']]" :label="'外键单选择器'" :readonly="true" @focus="foreignFlag=true"></z-input>
+					<div v-if="foreignFlag" class="z-width-100-percent ub-box ub-end">
+						<z-foreign-radio v-model="formData['foreignRadioVal']" :label="'外键单选择器'" :map="foreignMap" @close="foreignFlag=false"></z-foreign-radio>
+					</div>
+				</div>
 				<div style="height:160px;width:calc(200px + 60%);" class="z-margin-bottom-40-rem">
 					<z-text-area v-model="formData['textAreaVal']" :label="'区域'"></z-text-area>
 				</div>
@@ -58,15 +64,18 @@
 	import zCity from 'services/form/zCity.vue'
 	import zDate from 'services/form/zDate.vue'
 	import zSelect from 'services/form/zSelect.vue'
+	import zForeignRadio from 'services/form/zForeignRadio.vue'
 	import FileVedioLoader from 'utils/FileVedioLoader.js'
 	import {initVisibility} from 'utils/visibility.js'
 	import formSchema from 'schema/formSchema.js'
 	export default {
-		components: {zInput, zTextArea, zRadio, zCheckBox, zCity, zDate, zSelect, zUploadImg, zUploadVideo},
+		components: {zInput, zTextArea, zRadio, zCheckBox, zCity, zDate, zSelect, zForeignRadio, zUploadImg, zUploadVideo},
 		data(){
 			return{
+				foreignMap: {'100': '外键单选择器1', '200': '外键单选择器2', '300': '外键单选择器3'},
 				cityFlag: false,
 				dateFlag: false,
+				foreignFlag: false,
 				formData: JSON.parse(JSON.stringify(formSchema)),
 			}
 		},
@@ -88,5 +97,5 @@
 	.form-box{border-radius:4px;margin:30px 0;padding:50px 0 50px 0;background:#fff;}
 	.title{position:relative;font-size:1.4rem;color:#888;margin-bottom:2rem;padding:1.4rem 1rem;background:#e7e7e7;}
 	.title:after{content:'';position:absolute;bottom:0;left:0;width:120px;height:3px;background:#35485D;}
-	.submit-panel{z-index:3000;position:fixed;bottom:0;left:calc((100% - 1226px - 100) / 2);width:1226px;border-top:1px solid #eee;background:#fff;padding:2rem 0;}
+	.submit-panel{z-index:1000;position:fixed;bottom:0;left:calc((100% - 1226px - 100) / 2);width:1226px;border-top:1px solid #eee;background:#fff;padding:2rem 0;}
 </style>
